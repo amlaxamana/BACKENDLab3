@@ -25,8 +25,13 @@ SECRET_KEY = 'django-insecure-v3us$9a_-mhmeu+63l8f-p3gvcl#b+yxgjj+81xy=-fc@*p3_g
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['http://192.168.20.205:8000/', '192.168.20.205:8000', '192.168.20.205','https://backendlab3-qh3g.onrender.com/']
-
+ALLOWED_HOSTS = [
+    '192.168.20.205',                    # For local/LAN IP access (without port)
+    'backendlab3-qh3g.onrender.com',     # For your Render deployment
+    # If you use a load balancer or specific headers, you might need:
+    # 'localhost',
+    # '127.0.0.1',
+]
 
 # Application definition
 
