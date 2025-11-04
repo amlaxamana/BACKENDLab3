@@ -1,5 +1,4 @@
 from django.shortcuts import render
-from django.views.decorators.csrf import csrf_exempt # <-- ADD THIS IMPORT
 
 # Create your views here.
 from . models import UserRegistration
@@ -8,10 +7,22 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-# ... (register_user and list_users functions remain the same) ...
+@api_view(['POST'])
+def register_user(request):
+    serializer = RegistrationSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-# Apply the decorator here to disable CSRF check for this specific view
-@csrf_exempt 
+#BAGONG API
+@api_view(['GET'])
+def list_users(request):
+    users = UserRegistration.objects.all()
+    serializer = RegistrationSerializer(users, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
 @api_view(['GET', 'PUT', 'DELETE'])
 def user_detail(request, pk):
     try:
@@ -35,5 +46,4 @@ def user_detail(request, pk):
 
     elif request.method == 'DELETE':
         user.delete()
-        # This is the correct status for a successful deletion with no body
         return Response(status=status.HTTP_204_NO_CONTENT)

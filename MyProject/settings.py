@@ -47,21 +47,16 @@ INSTALLED_APPS = [
     'corsheaders',
 ]
 
-# settings.py
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    # ❌ REMOVE THIS LINE:
-    # 'django.middleware.csrf.CsrfViewMiddleware', 
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
 ]
-
-# ... rest of settings.py
 
 CSRF_TRUSTED_ORIGINS = [
     "https://backendlab3-qh3g.onrender.com"
