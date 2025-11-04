@@ -59,13 +59,13 @@ MIDDLEWARE = [
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://backendlab3-qh3g.onrender.com/"
+    "https://backendlab3-qh3g.onrender.com"
 ]    
 
 ROOT_URLCONF = 'MyProject.urls'
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOWED_ORIGINS = [
-    "https://backendlab3-qh3g.onrender.com/"]
+    "https://backendlab3-qh3g.onrender.com"]
 
 TEMPLATES = [
     {
