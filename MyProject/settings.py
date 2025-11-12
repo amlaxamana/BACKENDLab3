@@ -27,7 +27,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     '192.168.20.205',                    # For local/LAN IP access (without port)
-    'backendlab3-qh3g.onrender.com',     # For your Render deployment
+    'backendlab3-qh3g.onrender.com',
+    '127.0.0.1',  
+       # For your Render deployment
     # If you use a load balancer or specific headers, you might need:
     # 'localhost',
     # '127.0.0.1',
@@ -70,7 +72,7 @@ CORS_ALLOWED_ORIGINS = [
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / "MyProject" / "templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

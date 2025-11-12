@@ -47,3 +47,7 @@ def user_detail(request, pk):
     elif request.method == 'DELETE':
         user.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
+
+def login_view(request):
+    return render(request, "registration/login.html")
