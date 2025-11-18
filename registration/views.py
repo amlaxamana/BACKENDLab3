@@ -1,8 +1,10 @@
-from django.shortcuts import render
-
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
+from django.contrib.auth.hashers import check_password, make_password
+from django.urls import reverse
 # Create your views here.
-from . models import UserRegistration
-from . serializer import RegistrationSerializer
+from .models import UserRegistration
+from .serializer import RegistrationSerializer
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -50,4 +52,61 @@ def user_detail(request, pk):
     
 
 def login_view(request):
-    return render(request, "registration/login.html")
+    if request.method == "GET":
+        if request.session.get("user_id"):
+            return redirect('registration:users_html')
+        return render(request, 'registration/login.html')
+
+    email = request.POST.get('email', '').strip()
+    password = request.POST.get('password', '')
+
+    if not email or not password:
+        messages.error(request, "Enter both email and password.")
+        return render(request, 'registration/login.html', {'email': email})
+
+    try:
+        user = UserRegistration.objects.get(email=email)
+    except UserRegistration.DoesNotExist:
+        messages.error(request, "Invalid credentials.")
+        return render(request, 'registration/login.html', {'email': email})
+
+    if check_password(password, user.password):
+        request.session['user_id'] = user.id
+        request.session['user_name'] = f"{user.first_name} {user.last_name}"
+        return redirect('registration:users_html')
+
+    if user.password == password:
+        user.password = make_password(password)
+        user.save(update_fields=['password'])
+        request.session['user_id'] = user.id
+        request.session['user_name'] = f"{user.first_name} {user.last_name}"
+        return redirect('registration:users_html')
+
+    messages.error(request, "Invalid credentials.")
+    return render(request, 'registration/login.html', {'email': email})
+
+
+# ---------- LOGOUT ----------
+def logout_view(request):
+    request.session.flush()
+    return redirect('homepage')
+
+
+# ---------- LOGIN REQUIRED DECORATOR ----------
+def login_required_view(fn):
+    def wrapper(request, *args, **kwargs):
+        if not request.session.get('user_id'):
+            return redirect(f"{reverse('registration:login_html')}?next={request.path}")
+        return fn(request, *args, **kwargs)
+    wrapper.__name__ = fn.__name__
+    return wrapper
+
+
+# ---------- USERS LIST ----------
+@login_required_view
+def users_html(request):
+    users = UserRegistration.objects.all().order_by('id')
+    return render(request, 'registration/users_list.html', {
+        'users': users,
+        'current_user': request.session.get('user_name')
+    })

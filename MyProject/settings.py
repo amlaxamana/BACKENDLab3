@@ -26,13 +26,11 @@ SECRET_KEY = 'django-insecure-v3us$9a_-mhmeu+63l8f-p3gvcl#b+yxgjj+81xy=-fc@*p3_g
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    '192.168.20.205',                    # For local/LAN IP access (without port)
+    '127.0.0.1',
+    'http://127.0.0.1:8000/', 
+    '192.168.20.205',                    
     'backendlab3-qh3g.onrender.com',
-    '127.0.0.1',  
-       # For your Render deployment
-    # If you use a load balancer or specific headers, you might need:
-    # 'localhost',
-    # '127.0.0.1',
+
 ]
 
 # Application definition
@@ -61,7 +59,8 @@ MIDDLEWARE = [
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://backendlab3-qh3g.onrender.com"
+    "https://backendlab3-qh3g.onrender.com",
+    "http://127.0.0.1:8000/"
 ]    
 
 ROOT_URLCONF = 'MyProject.urls'

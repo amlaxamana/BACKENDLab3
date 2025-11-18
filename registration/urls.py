@@ -8,4 +8,7 @@ urlpatterns = [
     path('api/users/', views.list_users, name='list_user'),
     path('api/users/<int:pk>/', views.user_detail, name='user_detail'),
     path('login/', views.login_view, name='login_page'),
+    path('login/', views.login_view, name='login_html'),
+    path('logout/', views.logout_view, name='logout_html'),
+    path('users/', views.users_html, name='users_html'),
 ]
